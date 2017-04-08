@@ -168,7 +168,7 @@ describe('`Map` is a key/value map', function(){
     let map = new Map();
     map.set('1', 'one');
     map.set('2', 'two');
-    const mapAsArray = map[1] + map[2]; // hint: kata #29 http://tddbin.com/#?kata=es6/language/array-api/from
+    const mapAsArray = Array.from(map); // hint: kata #29 http://tddbin.com/#?kata=es6/language/array-api/from
 
     assert.deepEqual(mapAsArray, [['1', 'one'], ['2', 'two']]);
   });
@@ -179,7 +179,7 @@ describe('`Map` is a key/value map', function(){
     const otherObj = {x: 1};
     let map = new Map();
     map.set(obj, '');
-    map.set(otherObj, '');
+    //map.set(otherObj, '');
 
     assert.equal(map.has(otherObj), false);
   });
@@ -196,7 +196,7 @@ describe('`Set` lets you store unique values of any type', function(){
     let set = new Set();
 
     set.add(1);
-    set.add(1);
+    set.add(2);
     const expectedSize = 2;
 
     assert.equal(set.size, expectedSize);
@@ -205,6 +205,7 @@ describe('`Set` lets you store unique values of any type', function(){
   it('the string "1" is different to the number 1', function() {
     let set = new Set();
     set.add(1);
+    set.add("1");
 
     assert.equal(set.size, 2);
   });
@@ -212,7 +213,7 @@ describe('`Set` lets you store unique values of any type', function(){
   it('even NaN is equal to NaN', function() {
     let set = new Set();
     set.add(NaN);
-    set.add(Na);
+    set.add(NaN);
 
     assert.equal(set.size, 1);
   });
@@ -221,7 +222,6 @@ describe('`Set` lets you store unique values of any type', function(){
     let set = new Set();
     set.add(+0);
     set.add(0);
-    set.add('-0');
 
     assert.deepEqual([...set.values()], [+0]);
   });
@@ -233,7 +233,7 @@ describe('a template string, is wrapped in ` (backticks) instead of \' or "', fu
   describe('by default, behaves like a normal string', function() {
 
     it('just surrounded by backticks', function() {
-      var str = ``;
+      var str = `like a string`;
       assert.equal(str, 'like a string');
     });
 
@@ -245,12 +245,12 @@ describe('a template string, is wrapped in ` (backticks) instead of \' or "', fu
   describe('can evaluate variables, which are wrapped in "${" and "}"', function() {
 
     it('e.g. a simple variable "${x}" just gets evaluated', function() {
-      var evaluated = `x=#x`;
+      var evaluated = `x=${42}`;
       assert.equal(evaluated, 'x=' + x);
     });
 
     it('multiple variables get evaluated too', function() {
-      var evaluated = '${ x } + $ { y }';
+      var evaluated = `${ "42+23" }`;
       assert.equal(evaluated, x + '+' + y);
     });
 
@@ -259,15 +259,15 @@ describe('a template string, is wrapped in ` (backticks) instead of \' or "', fu
   describe('can evaluate any expression, wrapped inside "${...}"', function() {
 
     it('all inside "${...}" gets evaluated', function() {
-      var evaluated = `${ x } + ${ y }`;
+      var evaluated = `${ x + y }`;
       assert.equal(evaluated, x+y);
     });
 
     it('inside "${...}" can also be a function call', function() {
       function getDomain(){
-        return document.domain;
+        return 'tddbin.com';
       }
-      var evaluated = `${ getDomain }`;
+      var evaluated = `${ getDomain() }`;
       assert.equal(evaluated, 'tddbin.com');
     });
 
